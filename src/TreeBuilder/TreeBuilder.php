@@ -13,11 +13,6 @@ class TreeBuilder implements TreeBuilderInterface
 
     public function buildTree(string $path, ?string $entryDirectoryName = null): Directory
     {
-//        $it = new \RecursiveTreeIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS));
-//        foreach($it as $file) {
-//            dump($file);
-//        }
-
         $directory = new Directory($entryDirectoryName);
         $directory->setFiles($this->getFiles(realpath($path)));
         $directory->setDirectories($this->getDirectories(realpath($path)));
