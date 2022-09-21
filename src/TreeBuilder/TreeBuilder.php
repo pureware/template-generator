@@ -50,6 +50,7 @@ class TreeBuilder implements TreeBuilderInterface
         $fileCollection = new FileCollection();
         $finder = Finder::create()
             ->in($path)
+            ->ignoreDotFiles(false)
             ->depth(0);
         foreach ($finder->files() as $file) {
             $fileCollection->add(File::createFromSpl($file, $parentPath));
