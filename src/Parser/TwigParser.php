@@ -24,12 +24,19 @@ class TwigParser implements ParserInterface
         $this->templateData = $data;
     }
 
+    public function addTemplateData(string $key, $value): void
+    {
+        $this->templateData[$key] = $value;
+    }
+
     public function parseFile(File $file): File
     {
 
         try {
-            $file->setParsedFileContent($this->parseString($file->getContent()));
             $file->setParsedFileName($this->parseString($file->getName()));
+            $this->addTemplateData('fileNamespace', $file->getFileNamespace());
+            $this->addTemplateData('fileName', $file->getParsedFileName());
+            $file->setParsedFileContent($this->parseString($file->getContent()));
 
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Could not parse string template. See Error: %s', $e->getMessage()));
