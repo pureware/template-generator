@@ -23,7 +23,7 @@ $parser->setTemplateData(
 Then create a virtual files Tree. You can create a new directory or leave it empty.
 ```php 
 $treeBuilder = new Pureware\TemplateGenerator\TreeBuilder\TreeBuilder();
-$treeBuilder->skip(['path/to/file/or/dirrectory]); //skip file or dir
+$treeBuilder->skip(['path/to/file/or/dirrectory']); //skip file or dir
 $files = $treeBuilder->buildTree('../templates', 'YourNewDirectory'); // your templates
 ```
 
