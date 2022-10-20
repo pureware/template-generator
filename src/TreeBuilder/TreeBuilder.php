@@ -10,10 +10,18 @@ use Symfony\Component\Finder\Finder;
 
 class TreeBuilder implements TreeBuilderInterface
 {
+    private string $namespace;
+    private array $skipPaths = [];
 
-    public function buildTree(string $path, ?string $entryDirectoryName = null): Directory
+    public function skip(array $paths): void
     {
-        $directory = new Directory($entryDirectoryName);
+        $this->skipPaths = $paths;
+    }
+
+    public function buildTree(string $path, string $baseNamespace, ?string $entryDirectoryName = null): Directory
+    {
+        $this->namespace = $baseNamespace;
+        $directory = new Directory($entryDirectoryName ?? '');
         $directory->setFiles($this->getFiles(realpath($path)));
         $directory->setDirectories($this->getDirectories(realpath($path)));
 
@@ -32,6 +40,9 @@ class TreeBuilder implements TreeBuilderInterface
 
         foreach ($finder->directories() as $dir) {
             $relativeDirPath = sprintf('%s%s%s', $parentPath, $parentPath === '' ? '' : DIRECTORY_SEPARATOR, $dir->getFilename());
+            if (in_array($relativeDirPath, $this->skipPaths)) {
+                continue;
+            }
             $directory = new Directory($relativeDirPath);
             $directory->setDirectories($this->getDirectories($dir->getRealPath(), $relativeDirPath));
             $directory->setFiles($this->getFiles($dir->getRealPath(), $relativeDirPath));
@@ -48,7 +59,10 @@ class TreeBuilder implements TreeBuilderInterface
             ->ignoreDotFiles(false)
             ->depth(0);
         foreach ($finder->files() as $file) {
-            $fileCollection->add(File::createFromSpl($file, $parentPath));
+            $relativeFilePath = sprintf('%s%s%s', $parentPath, $parentPath === '' ? '' : DIRECTORY_SEPARATOR, $file->getFilename());
+            $namespace = $this->namespace . '\\' . str_replace(DIRECTORY_SEPARATOR , '\\',  $parentPath);
+
+            $fileCollection->add(File::createFromSpl($file, $relativeFilePath, $namespace));
         }
         return $fileCollection;
     }

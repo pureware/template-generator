@@ -6,12 +6,19 @@ class File implements FileInterface
 {
 
     protected string $name;
+    
+    protected string $fileNamespace;
 
     protected string $content = '';
 
-    public function __construct(string $name)
+    protected string $parsedFileName;
+
+    protected string $parsedFileContent = '';
+
+    public function __construct(string $name, $fileNamespace)
     {
         $this->name = $name;
+        $this->fileNamespace = $fileNamespace;
     }
 
     /**
@@ -29,10 +36,6 @@ class File implements FileInterface
     {
         $this->content = $content;
     }
-
-    protected string $parsedFileName;
-
-    protected string $parsedFileContent = '';
 
     /**
      * @return string
@@ -82,13 +85,18 @@ class File implements FileInterface
         $this->name = $name;
     }
 
-    public static function createFromSpl(\SplFileInfo $fileInfo, string $parentPath): self {
-        $relativeFilePath = sprintf('%s%s%s', $parentPath, $parentPath === '' ? '' : DIRECTORY_SEPARATOR, $fileInfo->getFilename());
+    /**
+     * @return string
+     */
+    public function getFileNamespace(): string
+    {
+        return $this->fileNamespace;
+    }
 
-        $new = new self($relativeFilePath);
+    public static function createFromSpl(\SplFileInfo $fileInfo, string $relativeFilePath, string $namespace): self {
+        $new = new self($relativeFilePath, rtrim($namespace, '\\'));
         $new->setContent(file_get_contents($fileInfo->getRealPath()));
         return $new;
-
     }
 
 }
