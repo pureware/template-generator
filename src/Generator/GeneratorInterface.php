@@ -17,4 +17,5 @@ interface GeneratorInterface
 
     public function generate(Directory $directory);
 
+    public function getParser(): ParserInterface;
 }

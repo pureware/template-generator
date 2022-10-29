@@ -16,6 +16,7 @@ class Directory implements DirectoryInterface
 
     public function __construct(string $name) {
         $this->name = $name;
+        $this->files = new FileCollection();
     }
 
     public function getName(): string

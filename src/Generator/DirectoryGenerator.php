@@ -91,7 +91,13 @@ class DirectoryGenerator implements GeneratorInterface
     protected function buildDirPath(Directory $dir): string {
         return $this->destinationPath . DIRECTORY_SEPARATOR . $dir->getName();
     }
+
     protected function buildFilePath(File $file): string {
         return $this->destinationPath . DIRECTORY_SEPARATOR . $file->getParsedFileName();
+    }
+    
+    public function getParser(): ParserInterface
+    {
+        return $this->parser;
     }
 }
