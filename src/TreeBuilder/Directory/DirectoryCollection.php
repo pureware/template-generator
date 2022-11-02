@@ -73,4 +73,5 @@ class DirectoryCollection extends \Illuminate\Support\Collection
     {
         $this->directories->add($directory);
     }
+    
 }

@@ -60,6 +60,9 @@ class TreeBuilder implements TreeBuilderInterface
             ->depth(0);
         foreach ($finder->files() as $file) {
             $relativeFilePath = sprintf('%s%s%s', $parentPath, $parentPath === '' ? '' : DIRECTORY_SEPARATOR, $file->getFilename());
+            if (in_array($relativeFilePath, $this->skipPaths)) {
+                continue;
+            }
             $namespace = $this->namespace . '\\' . str_replace(DIRECTORY_SEPARATOR , '\\',  $parentPath);
 
             $fileCollection->add(File::createFromSpl($file, $relativeFilePath, $namespace));

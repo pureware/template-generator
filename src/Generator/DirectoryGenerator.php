@@ -36,10 +36,9 @@ class DirectoryGenerator implements GeneratorInterface
 
     public function generate(Directory $directory)
     {
-        if (!$this->force && $this->filesystem->exists($this->destinationPath)) {
-            throw new \RuntimeException(sprintf('Directory already exists. Force file override to create new destination.'));
+        if (!$this->filesystem->exists($this->destinationPath)) {
+            $this->filesystem->mkdir($this->destinationPath);
         }
-        $this->filesystem->mkdir($this->destinationPath);
 
         $this->parseTemplates($directory);
         /** @var File $file */
