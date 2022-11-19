@@ -32,43 +32,26 @@ class DirectoryCollection extends \Illuminate\Support\Collection
 
     }
 
-    /**
-     * @param FileCollection $files
-     */
     public function setFiles(FileCollection $files): void
     {
         $this->files = $files;
     }
 
-    /**
-     * @param FileInterface $file
-     * @return void
-     */
     public function addFile(FileInterface $file): void
     {
         $this->files->add($file);
     }
 
-    /**
-     * @return DirectoryCollection|null
-     */
     public function getDirectories(): ?DirectoryCollection
     {
         return $this->items;
     }
 
-    /**
-     * @param DirectoryCollection|null $directories
-     */
     public function setDirectories(?DirectoryCollection $directories): void
     {
         $this->items = $directories;
     }
 
-    /**
-     * @param DirectoryInterface $directory
-     * @return void
-     */
     public function addDirectories(DirectoryInterface $directory): void
     {
         $this->directories->add($directory);
