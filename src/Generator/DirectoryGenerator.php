@@ -48,14 +48,10 @@ class DirectoryGenerator implements GeneratorInterface
     }
 
     protected function getFiles(Directory $directory): FileCollection {
-        $files = new FileCollection();
-
         if ($this->force) {
             $files = $directory->getFiles();
         } else {
-            $files = $directory->getFiles()->filter(function (File $file) {
-               return !$this->filesystem->exists($this->buildFilePath($file));
-            });
+            $files = $directory->getFiles()->filter(fn(File $file) => !$this->filesystem->exists($this->buildFilePath($file)));
         }
 
 

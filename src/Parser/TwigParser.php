@@ -46,8 +46,6 @@ class TwigParser implements ParserInterface
     }
 
     /**
-     * @param string $string
-     * @return string
      * @throws LoaderError
      * @throws SyntaxError
      */
